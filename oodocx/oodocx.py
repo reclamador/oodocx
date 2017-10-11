@@ -538,6 +538,46 @@ class Docx():
             shutil.rmtree(self.write_dir, onerror=helper_functions.remove_readonly)
         except FileNotFoundError:
             pass
+
+    def search_rec(self, search, result_type='run'):
+        '''Add for us on Feb14 to find words recursively'''
+        try:
+            searchre = re.compile(search)
+        except Exception as e:
+            return None
+
+        results = []
+        for element in self.document.iter('{' + 'http://schemas.openxmlformats.org/wordprocessingml/2006/main' + '}t'):
+            if element.text and searchre.search(element.text):
+                results.append(element)
+        if results is not None:
+            if result_type.lower() == 'paragraph':
+                for i, result in enumerate(results):
+                    if (result.iterancestors('{' + 'http://schemas.openxmlformats.org/wordprocessingml/2006/main' + '}p') is not None):
+                        while not result.tag == '{' + 'http://schemas.openxmlformats.org/wordprocessingml/2006/main' + '}p':
+                            result = result.getparent()
+                        else:
+                            results[i] = result
+                    else:
+                        raise
+            elif result_type.lower() == 'run':
+                for i, result in enumerate(results):
+                    if (result.iterancestors('{' + 'http://schemas.openxmlformats.org/wordprocessingml/2006/main' + '}r') is not None):
+                        while not result.tag == '{' + 'http://schemas.openxmlformats.org/wordprocessingml/2006/main' + '}r':
+                            result = result.getparent()
+                        else:
+                            results[i] = result
+                    else:
+                        raise
+        return results
+
+    def exists(self, search, result_type='run'):
+        searchre = re.compile(search)
+        results = []
+        for element in self.document.iter('{' + 'http://schemas.openxmlformats.org/wordprocessingml/2006/main' + '}t'):
+            if element.text and searchre.search(element.text):
+                results.append(element)
+        return results
     
 def merge_text(run):
     '''Combines the text of all text elements in a run into a single
