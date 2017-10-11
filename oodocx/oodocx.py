@@ -578,6 +578,14 @@ class Docx():
             if element.text and searchre.search(element.text):
                 results.append(element)
         return results
+
+    def remove_images(self):
+        results = []
+        for element in self.document.iter(
+                    '{' + 'http://schemas.openxmlformats.org/wordprocessingml/2006/main' + '}drawing'):
+            results.append(element)
+        for result in results:
+            result.getparent().remove(result)
     
 def merge_text(run):
     '''Combines the text of all text elements in a run into a single
@@ -1402,3 +1410,8 @@ def remove_formatting(element):
         if (descendant.tag == '{' + NSPREFIXES['w'] + '}pPr' or 
         descendant.tag == '{' + NSPREFIXES['w'] + '}rPr'):
             descendant.getparent().remove(descendant)        
+
+
+def remove(elements):
+    for element in elements:
+        element.getparent().remove(element)
