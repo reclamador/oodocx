@@ -1415,3 +1415,9 @@ def remove_formatting(element):
 def remove(elements):
     for element in elements:
         element.getparent().remove(element)
+
+def highlight(doc, word):
+    modify_font(doc.search_rec(word), highlight='yellow')
+
+def highlight_and_remark(doc, word):
+    modify_font(doc.search_rec(word), color='red', highlight='yellow')
