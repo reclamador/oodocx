@@ -4,7 +4,7 @@ import stat
 import os
 from lxml import etree
 
-from oodocx.write_files import NSPREFIXES
+from .write_files import NSPREFIXES
 
 
 def get_image_size(fname):
