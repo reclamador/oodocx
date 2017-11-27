@@ -3,7 +3,10 @@ import imghdr
 import stat
 import os
 from lxml import etree
-	
+
+from oodocx.write_files import NSPREFIXES
+
+
 def get_image_size(fname):
 	'''Determine the image type of fhandle and return its size.
 	from draco'''

@@ -1416,6 +1416,21 @@ def remove(elements):
     for element in elements:
         element.getparent().remove(element)
 
+
+def remove_all(doc, search):
+    """
+    Remove all ocurrences of the search term in a oodocx instance
+    :param doc: the oodocx instance
+    :param search: the term to search for
+    :return: None
+    """
+    if doc.search(search) is None:
+        return
+
+    while doc.search(search) is not None:
+        paragraph = doc.search(search, result_type="paragraph")
+        remove(paragraph)
+
 def highlight(doc, word):
     modify_font(doc.search_rec(word), highlight='yellow')
 
